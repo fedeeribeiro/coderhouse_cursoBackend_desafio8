@@ -3,6 +3,7 @@ import { usersModel } from '../persistence/models/users.model.js';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GithubStrategy } from 'passport-github2';
 import { hashPassword, comparePasswords } from '../utils.js';
+import mongoose from 'mongoose';
 
 passport.use('register', new LocalStrategy({ 
         usernameField: 'email',
@@ -26,7 +27,7 @@ passport.use('login', new LocalStrategy({
         passReqToCallback: true
     }, async (req, email, password, done) => {
         if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-            const user = { email, name: 'coder', admin: true }
+            const user = { _id: new mongoose.Types.ObjectId('000000000000000000000001'), email, firstName: 'coder', lastName: 'house', admin: true }
             return done(null, user)
         } else {
             const user = await usersModel.findOne({ email });
@@ -60,7 +61,6 @@ passport.use('github', new GithubStrategy({
         const userDB = await usersModel.create(newUser);
         done(null, userDB);
     } else {
-        console.log(user)
         done(null, user);
     }
 }));
@@ -70,6 +70,6 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-    const user = await usersModel.findById(id);
+    const user = await usersModel.findById(id) || { _id: new mongoose.Types.ObjectId('000000000000000000000001'), email: 'adminCoder@coder.com', firstName: 'coder', lastName: 'house', admin: true };
     done(null, user)
 });
