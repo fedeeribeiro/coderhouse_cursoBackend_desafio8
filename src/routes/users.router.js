@@ -1,21 +1,12 @@
 import { Router } from 'express';
-import UsersManager from '../persistence/daos/mongoManagers/UsersManager.js';
-import passport from 'passport';
+import {
+    githubLoginPassportController,
+    logoutController
+} from '../controllers/users.controller.js';
 
 const router = Router();
-const usersManager = new UsersManager();
 
-router.get('/logout', (req, res) => {
-    req.session.destroy( error => {
-        if (error) {
-            console.log(error);
-            res.json({ message: error })
-        } else {
-            // res.json({ message: 'Sesión eliminada con éxito.' });
-            res.redirect('/views/login')
-        }
-    })
-});
+router.get('/logout', logoutController);
 
 // registro sin passport
 // router.post('/register', async (req, res) => {
@@ -62,9 +53,6 @@ router.post('/login', passport.authenticate('login', {
 // login con passport github
 router.get('/authGithub', passport.authenticate('github', { scope: ['user:email'] }));
 
-router.get('/github', passport.authenticate('github'), (req, res) => {
-    req.session.email = req.user.email;
-    res.redirect('/views/products');
-});
+router.get('/github', passport.authenticate('github'), githubLoginPassportController);
 
 export default router;

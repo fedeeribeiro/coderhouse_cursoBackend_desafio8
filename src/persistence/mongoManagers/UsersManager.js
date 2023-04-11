@@ -1,4 +1,5 @@
-import { usersModel } from '../../models/users.model.js';
+import { usersModel } from './models/users.model.js';
+import config from '../../config.js';
 
 export default class UsersManager {
     async createUser(user) {
@@ -22,7 +23,7 @@ export default class UsersManager {
             const foundUser = await usersModel.find({ email, password });
             if (foundUser.length !== 0) {
                 return foundUser
-            } else if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+            } else if (email === config.ADMIN_EMAIL && password === config.ADMIN_PASSWORD) {
                 return [{...user, firstName: 'coder', lastName: 'house', admin: true, age: 9}]
             } else {
                 return null

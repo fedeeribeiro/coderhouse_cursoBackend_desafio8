@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
-
-const URI = 'mongodb+srv://fedeeribeiro:coderhouse@cluster0.hj7njhs.mongodb.net/eCommerceProjectCoderhouse?retryWrites=true&w=majority';
+import config from '../config.js';
 
 (async () => {
     try {
-        await mongoose.connect(URI);
+        await mongoose.connect(config.MONGO_URL);
         console.log('Conectado a la base de datos correctamente.');
     } catch (error) {
         console.log('Error de conexión a la base de datos.');

@@ -12,9 +12,9 @@ import usersRouter from './routes/users.router.js';
 import './persistence/dbConfig.js';
 import passport from 'passport';
 import './passport/passportStrategies.js';
+import config from './config.js';
 
 const app = express();
-const PORT = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
@@ -43,8 +43,8 @@ app.use('/api/products', productsRouter);
 app.use('/api/users', usersRouter);
 app.use('/views', viewsRouter);
 
-const httpServer = app.listen(PORT, () => {
-    console.log(`Servidor escuchando al puerto ${PORT}.`)
+const httpServer = app.listen(config.PORT, () => {
+    console.log(`Servidor escuchando al puerto ${config.PORT}.`)
 });
 
 const socketServer = new Server(httpServer);

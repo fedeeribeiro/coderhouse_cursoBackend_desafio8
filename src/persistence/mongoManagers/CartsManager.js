@@ -1,7 +1,4 @@
-import { cartsModel } from '../../models/carts.model.js';
-import ProductManager from './ProductsManager.js';
-
-const productManager = new ProductManager();
+import { cartsModel } from './models/carts.model.js';
 
 export default class CartManager {
     async addCart() {
