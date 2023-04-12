@@ -1,5 +1,5 @@
 import passport from 'passport';
-import { usersModel } from '../persistence/models/users.model.js';
+import { usersModel } from '../persistence/mongoManagers/models/users.model.js';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GithubStrategy } from 'passport-github2';
 import { hashPassword, comparePasswords } from '../utils.js';
