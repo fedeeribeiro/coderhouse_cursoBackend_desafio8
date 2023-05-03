@@ -1,6 +1,6 @@
-import { productsModel } from './models/products.model.js';
+import { productsModel } from '../../mongo/models/products.model.js';
 
-export default class ProductManager {
+export default class ProductsMongo {
     async addProduct(product) {
         try {
             const newProduct = await productsModel.create(product);

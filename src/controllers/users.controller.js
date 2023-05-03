@@ -5,8 +5,7 @@ export const logoutController = (req, res) => {
                 console.log(error);
                 res.json({ message: error })
             } else {
-                // res.json({ message: 'Sesión eliminada con éxito.' });
-                res.redirect('/views/login')
+                res.redirect('/views/login').json({ message: 'Sesión eliminada con éxito.' });
             }
         })
     } catch (error) {

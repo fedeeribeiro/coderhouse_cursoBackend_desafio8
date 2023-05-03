@@ -1,10 +1,10 @@
-import ProductManager from '../persistence/mongoManagers/ProductsManager.js';
+import DAO from '../persistence/DAOs/factory.js';
 
-const productManager = new ProductManager();
+const productsManager = DAO.products;
 
 export const getProductsController = async (req, res) => {
     try {
-        const results = await productManager.getProducts(req.query);
+        const results = await productsManager.getProducts(req.query);
         if (results) {
             res.json({ message: 'Productos encontrados.', results })
         } else {
@@ -18,7 +18,7 @@ export const getProductsController = async (req, res) => {
 export const getProductByIdController = async (req, res) => { 
     try {
         const { productId } = req.params;
-        const productFound = await productManager.getProductById(productId);
+        const productFound = await productsManager.getProductById(productId);
         if (productFound) {
             res.json({ message: 'Producto encontrado.', product: productFound })
         } else {
@@ -32,7 +32,7 @@ export const getProductByIdController = async (req, res) => {
 export const addProductController = async (req, res) => { 
     try {
         const newProduct = req.body;
-        const addedProduct = await productManager.addProduct(newProduct);
+        const addedProduct = await productsManager.addProduct(newProduct);
         if (addedProduct) {
             res.json({ message: 'Producto agregado exitosamente.', product: addedProduct })
         } else {
@@ -47,7 +47,7 @@ export const updateProductController = async (req, res) => {
     try {
         const { productId } = req.params;
         const newValuesObject = req.body;
-        const updatedProduct = await productManager.updateProduct(productId, newValuesObject);
+        const updatedProduct = await productsManager.updateProduct(productId, newValuesObject);
         if (updatedProduct) {
             res.json({ message: 'Se ha actualizado el producto exitosamente.', product: updatedProduct })
         } else {
@@ -61,7 +61,7 @@ export const updateProductController = async (req, res) => {
 export const deleteProductController =  async (req, res) => {
     try {
         const { productId } = req.params;
-        const deletedProduct = await productManager.deleteProduct(productId);
+        const deletedProduct = await productsManager.deleteProduct(productId);
         if (deletedProduct) {
             res.json({ message: 'Se ha eliminado el producto exitosamente.', product: deletedProduct })
         } else {

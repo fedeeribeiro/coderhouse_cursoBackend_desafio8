@@ -1,7 +1,7 @@
-import { usersModel } from './models/users.model.js';
-import config from '../../config.js';
+import { usersModel } from '../../mongo/models/users.model.js';
+import config from '../../../config.js';
 
-export default class UsersManager {
+export default class UsersMongo {
     async createUser(user) {
         const { email } = user;
         try {

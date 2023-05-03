@@ -1,9 +1,9 @@
 import fs from 'fs';
-import ProductManager from './ProductsManager.js'
+import ProductsFile from '../productsDAOs/ProductsFile.js/index.js';
 
-const productManager = new ProductManager('./utils/products.json');
+const productsManager = new ProductsFile('./utils/products.json');
 
-export default class CartManager {
+export default class CartsFile {
     constructor(path){
         this.path = path;
         if(!fs.existsSync(path)) fs.writeFileSync(path, '[]')
@@ -60,7 +60,7 @@ export default class CartManager {
         const cartFound = cartsArray.find(cart => cart.id === cartId)
         if (!cartFound) console.log('Error. Carrito no encontrado.')
         else{
-            const product = await productManager.getProductById(productId);
+            const product = await productsManager.getProductById(productId);
             if (product) {
                 let i = 0;
                 let productFound = false;

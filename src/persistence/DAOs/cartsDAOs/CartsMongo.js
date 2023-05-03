@@ -1,6 +1,6 @@
-import { cartsModel } from './models/carts.model.js';
+import { cartsModel } from '../../mongo/models/carts.model.js';
 
-export default class CartManager {
+export default class CartsMongo {
     async addCart() {
         try{
             const newCart = await cartsModel.create({ products: [] });

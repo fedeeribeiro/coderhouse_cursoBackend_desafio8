@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export default class ProductManager {
+export default class ProductsFile {
     constructor(path){
         this.path = path;
         if(!fs.existsSync(path)) fs.writeFileSync(path, '[]')

@@ -9,7 +9,7 @@ import cartsRouter from './routes/carts.router.js';
 import productsRouter from './routes/products.router.js';
 import viewsRouter from './routes/views.router.js';
 import usersRouter from './routes/users.router.js';
-import './persistence/dbConfig.js';
+import './persistence/mongo/dbConfig.js';
 import passport from 'passport';
 import './passport/passportStrategies.js';
 import config from './config.js';
@@ -21,15 +21,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(session({
-    secret: 'sessionKey',
-    resave: false,
-    saveUninitialized: true,
-    store: new mongoStore({
-        mongoUrl: 'mongodb+srv://fedeeribeiro:coderhouse@cluster0.hj7njhs.mongodb.net/eCommerceProjectCoderhouse?retryWrites=true&w=majority'
+config.PERSISTENCE === 'MONGO' ? app.use(session({
+        secret: 'sessionKey',
+        resave: false,
+        saveUninitialized: true,
+        store: new mongoStore({
+            mongoUrl: 'mongodb+srv://fedeeribeiro:coderhouse@cluster0.hj7njhs.mongodb.net/eCommerceProjectCoderhouse?retryWrites=true&w=majority'
+            })
         })
-    })
-);
+    ) : null;
 
 app.engine('handlebars', handlebars.engine());
 app.set('view engine', 'handlebars');

@@ -1,12 +1,11 @@
-import CartManager from '../persistence/mongoManagers/CartsManager.js';
-import ProductManager from '../persistence/mongoManagers/ProductsManager.js';
+import DAO from "../persistence/DAOs/factory.js";
 
-const productManager = new ProductManager();
-const cartManager = new CartManager();
+const productsManager = DAO.products;
+const cartsManager = DAO.carts;
 
 export const getProductsController = async (req, res) => {
     try {
-        const results = await productManager.getProducts(req.query);
+        const results = await productsManager.getProducts(req.query);
         const products = (results.payload).map(product => {
             return {
                 id: product._id,
@@ -36,7 +35,7 @@ export const getRealTimeProductsController = (req, res) => {
 
 export const getProductsForUserController = async (req, res) => {
     try {
-        const results = await productManager.getProducts(req.query);
+        const results = await productsManager.getProducts(req.query);
         const user = { email: req.user.email, name: req.user.firstName, role: req.user.admin ? 'admin' : 'user' };
         if (results.prevLink) {
             results.prevLink = (results.prevLink).replace('api', 'views')
@@ -66,7 +65,7 @@ export const getProductsForUserController = async (req, res) => {
 export const getCartController = async (req, res) => {
     try {
         const { cartId } = req.params;
-        const cart = await cartManager.getProductsFromCart(cartId);
+        const cart = await cartsManager.getProductsFromCart(cartId);
         const products = (cart[0].products).map(product => {
             return {
                 id: product._id._id.toString(),
