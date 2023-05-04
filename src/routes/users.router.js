@@ -1,13 +1,31 @@
 import { Router } from 'express';
 import passport from 'passport';
-import {
-    githubLoginPassportController,
-    logoutController
-} from '../controllers/users.controller.js';
+import UsersController from '../controllers/users.controller.js';
 
-const router = Router();
+class UsersRouter {
+    constructor() {
+        this.router = Router();
+        this.router.post('/register', passport.authenticate('register', {
+            failureRedirect: '/views/errorRegister',
+            successRedirect: '/views/login',  
+            passReqToCallback: true
+        }));
+        this.router.post('/login', passport.authenticate('login', {
+            failureRedirect: '/views/errorLogin',
+            successRedirect: '/views/products',  
+            passReqToCallback: true
+        }));
+        this.router.get('/logout', UsersController.logout);
+        this.router.get('/authGithub', passport.authenticate('github', { scope: ['user:email'] }));
+        this.router.get('/github', passport.authenticate('github'), UsersController.githubLoginPassport);
+    }
 
-router.get('/logout', logoutController);
+    getRouter() {
+        return this.router;
+    }
+}
+
+export default new UsersRouter();
 
 // registro sin passport
 // router.post('/register', async (req, res) => {
@@ -18,13 +36,6 @@ router.get('/logout', logoutController);
 //         res.redirect('/views/errorRegister')
 //     }
 // });
-
-// registro con passport
-router.post('/register', passport.authenticate('register', {
-    failureRedirect: '/views/errorRegister',
-    successRedirect: '/views/login',  
-    passReqToCallback: true
-}));
 
 // login sin passport
 // router.post('/login', async (req, res) => {
@@ -43,17 +54,3 @@ router.post('/register', passport.authenticate('register', {
 //         res.redirect('/views/errorLogin')
 //     }
 // });
-
-// login con passport
-router.post('/login', passport.authenticate('login', {
-    failureRedirect: '/views/errorLogin',
-    successRedirect: '/views/products',  
-    passReqToCallback: true
-}));
-
-// login con passport github
-router.get('/authGithub', passport.authenticate('github', { scope: ['user:email'] }));
-
-router.get('/github', passport.authenticate('github'), githubLoginPassportController);
-
-export default router;

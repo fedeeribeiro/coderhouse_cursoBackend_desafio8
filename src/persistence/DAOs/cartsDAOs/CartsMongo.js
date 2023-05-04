@@ -78,4 +78,60 @@ export default class CartsMongo {
             console.log(error)
         }
     }
+
+    async completePurchase(cartId, user) {
+        const unavailableProducts = [];
+        const purchasedProducts = [];
+        let total = 0;
+        try {
+            const cart = await cartsModel.findById(cartId);
+            for (cartProduct in cart.products) {
+                const product = await productsModel.findById(cartProduct._id);
+                if (product.stock < cartProduct.quantity) {
+                    unavailableProducts.push(cartProduct);
+                } else {
+                    product.stock -= cartProduct.quantity;
+                    total += product.price * cartProduct.quantity;
+                    purchasedProducts.push(cartProduct);
+                    await product.save();
+                }
+            }
+            cart.products = unavailableProducts;
+            await cart.save();
+            const tickets = await ticketsModel.find();
+            if (purchasedProducts.length !== 0) {
+                let newTicket;
+                if (tickets.length === 0) {
+                    newTicket = await ticketsModel.create({ 
+                        code: '00000001',
+                        purchase_datetime: Date.now(),
+                        amount: total,
+                        purchaser: user,
+                    });
+                } else {
+                    const lastCode = tickets[tickets.length - 1].code;
+                    const newCode = (parseInt(lastCode) + 1).toString().padStart(8, '0');
+                    newTicket = await ticketsModel.create({ 
+                        code: newCode,
+                        purchase_datetime: Date.now(),
+                        amount: total,
+                        purchaser: user,
+                    });
+                }
+                return {
+                    message: 'Compra realizada con éxito.',
+                    ticket: newTicket,
+                    new_cart: cart,
+                    unavailable_products: unavailableProducts
+                }
+            } else {
+                return {
+                    message: 'No se pudo realizar la compra por falta de stock.',
+                    unavailable_products: unavailableProducts
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

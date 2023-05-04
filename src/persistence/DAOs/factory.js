@@ -11,13 +11,13 @@ let DAO = {
 
 switch (config.PERSISTENCE) {
     case 'MONGO':
-        await import('../mongo/dbConfig.js');
+        await import('../mongo/mongoConfig.js');
         DAO.users = new UsersMongo();
         DAO.carts = new CartsMongo();
         DAO.products = new ProductsMongo();
         break;
     default:
-        await import('../mongo/dbConfig.js');
+        await import('../mongo/mongoConfig.js');
         DAO.users = new UsersMongo();
         DAO.carts = new CartsMongo();
         DAO.products = new ProductsMongo();

@@ -1,32 +1,22 @@
 import { Router } from 'express';
-import {
-    addCartController,
-    addProductToCartController,
-    deleteProductFromCartController,
-    emptyCartController,
-    getCartByIdController,
-    replaceProductsInCartController,
-    updateProductInCartController,
+import CartsController from '../controllers/carts.controller.js';
 
-} from '../controllers/carts.controller.js';
+class CartsRouter {
+    constructor() {
+        this.router = Router();
+        this.router.post('/', CartsController.addCart);
+        this.router.get('/:cartId', CartsController.getCartById);
+        this.router.post('/:cartId/products/:productId', CartsController.addProductToCart);
+        this.router.delete('/:cartId/products/:productId', CartsController.deleteProductFromCart);
+        this.router.put('/:cartId', CartsController.replaceProductsInCart);
+        this.router.put('/:cartId/products/:productId', CartsController.updateProductInCart);
+        this.router.delete('/:cartId', CartsController.emptyCart);
+        this.router.post('/:cartId/purchase', CartsController.addProductToCart);
+    }
 
-const router = Router();
+    getRouter() {
+        return this.router;
+    }
+}
 
-router.post('/', addCartController);
-
-router.get('/:cartId', getCartByIdController);
-
-router.post('/:cartId/products/:productId', addProductToCartController);
-
-router.delete('/:cartId/products/:productId', deleteProductFromCartController);
-
-router.put('/:cartId', replaceProductsInCartController);
-
-router.put('/:cartId/products/:productId', updateProductInCartController);
-
-router.delete('/:cartId', emptyCartController);
-
-router.post('/:cartId/purchase', addProductToCartController);
-
-
-export default router;
+export default new CartsRouter();

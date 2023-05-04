@@ -1,31 +1,22 @@
 import { Router } from 'express';
-import { 
-    getProductsController,
-    getRealTimeProductsController,
-    getProductsForUserController,
-    getCartController,
-    renderLoginController,
-    renderRegisterController,
-    renderErrorRegisterController,
-    renderErrorLoginController,
-} from '../controllers/views.controller.js';
+import ViewsController from '../controllers/views.controller.js';
 
-const router = Router();
+class ViewsRouter {
+    constructor() {
+        this.router = Router();
+        this.router.get('/', ViewsController.getProducts);
+        this.router.get('/realTimeProducts', ViewsController.getRealTimeProducts);
+        this.router.get('/products', ViewsController.getProductsForUser);
+        this.router.get('/carts/:cartId', ViewsController.getCart);
+        this.router.get('/login', ViewsController.renderLogin);
+        this.router.get('/register', ViewsController.renderRegister);
+        this.router.get('/errorRegister', ViewsController.renderErrorRegister);
+        this.router.get('/errorLogin', ViewsController.renderErrorLogin);
+    }
 
-router.get('/', getProductsController);
+    getRouter() {
+        return this.router;
+    }
+}
 
-router.get('/realTimeProducts', getRealTimeProductsController);
-
-router.get('/products', getProductsForUserController);
-
-router.get('/carts/:cartId', getCartController);
-
-router.get('/login', renderLoginController);
-
-router.get('/register', renderRegisterController);
-
-router.get('/errorRegister', renderErrorRegisterController);
-
-router.get('/errorLogin', renderErrorLoginController);
-
-export default router;
+export default new ViewsRouter();
