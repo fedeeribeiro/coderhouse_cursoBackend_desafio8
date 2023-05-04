@@ -16,6 +16,17 @@ class ProductsController {
         }
     }
 
+    getMockingProducts = async (req, res) => {
+        try {   
+            const mockingProducts = await productsManager.getMockingProducts();
+            if (mockingProducts) {
+                res.json({ message: 'Productos falsos.', results: mockingProducts })
+            }
+        } catch (error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
+
     getProductById = async (req, res) => { 
         try {
             const { productId } = req.params;

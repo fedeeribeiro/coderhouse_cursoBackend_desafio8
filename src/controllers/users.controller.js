@@ -6,7 +6,7 @@ class UsersController {
                     console.log(error);
                     res.json({ message: error })
                 } else {
-                    res.redirect('/views/login').json({ message: 'Sesión eliminada con éxito.' });
+                    res.redirect('/views/login');
                 }
             })
         } catch (error) {

@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { productsModel } from '../../mongo/models/products.model.js';
 
 export default class ProductsMongo {
@@ -45,6 +46,27 @@ export default class ProductsMongo {
                 nextLink: nextLink,
             }
             return results
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async getMockingProducts() {
+        try {
+            const mockingProducts = [];
+            for (let i = 0; i < 100; i++) {
+                const product = await productsModel.create({
+                    title: faker.commerce.productName(),
+                    description: faker.commerce.productDescription(),
+                    price: faker.commerce.price(),
+                    thumbnail: faker.image.imageUrl(),
+                    code: faker.random.alphaNumeric(6),
+                    stock: faker.random.numeric(),
+                    category: faker.commerce.department()
+                })
+                mockingProducts.push(product)
+            }
+            return mockingProducts
         } catch (error) {
             console.log(error)
         }

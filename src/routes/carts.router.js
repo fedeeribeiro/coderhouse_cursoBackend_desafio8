@@ -11,7 +11,7 @@ class CartsRouter {
         this.router.put('/:cartId', CartsController.replaceProductsInCart);
         this.router.put('/:cartId/products/:productId', CartsController.updateProductInCart);
         this.router.delete('/:cartId', CartsController.emptyCart);
-        this.router.post('/:cartId/purchase', CartsController.addProductToCart);
+        this.router.post('/:cartId/purchase', CartsController.completePurchase);
     }
 
     getRouter() {
